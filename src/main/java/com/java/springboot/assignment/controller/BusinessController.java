@@ -1,7 +1,10 @@
 package com.java.springboot.assignment.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.java.springboot.assignment.api.BusinessApi;
 import com.java.springboot.assignment.dto.SearchResultDto;
@@ -14,40 +17,41 @@ public class BusinessController implements BusinessApi{
 
 	@Autowired
 	BusinessService businessService;
-	
-	@Override
-	public String home() {
-		return "server running!";
-	}
 
 	@Override
-	public Business addBusiness(Business business) {
+	public ResponseEntity<Business> addBusiness(Business business) {
 		businessService.addBusiness(business);
-		return business;
+		return ResponseEntity.status(HttpStatus.CREATED).body(business);
 	}
 
 	@Override
-	public Branch addBranch(Branch branch) {
+	public ResponseEntity<Branch> addBranch(Branch branch) {
 		businessService.addBranch(branch);
-		return branch;
+		return ResponseEntity.status(HttpStatus.CREATED).body(branch);
 	}
 
 	@Override
-	public Business updateBusiness(Business business) {
+	public ResponseEntity<Business> updateBusiness(Business business) {
 		businessService.updateBusiness(business);
-		return business;
+		return ResponseEntity.ok().body(business);
 	}
 
 	@Override
-	public Branch updateBranch(Branch branch) {
+	public ResponseEntity<Branch> updateBranch(Branch branch) {
 		businessService.updateBranch(branch);
-		return branch;
+		return ResponseEntity.ok().body(branch);
 	}
 
 	@Override
-	public SearchResultDto Search(String searchString) {
+	public ResponseEntity<SearchResultDto> Search(String searchString) {
 		SearchResultDto searchResult = businessService.Search(searchString);
-		return searchResult;
+		if( (searchResult.getBusinessList() == null || searchResult.getBusinessList().isEmpty())
+				&& (searchResult.getBranchList() == null || searchResult.getBranchList().isEmpty())) {
+			throw new ResponseStatusException(
+      			  HttpStatus.NOT_FOUND, "Relevant Business or Branch not Found."
+      			);
+		}
+		return ResponseEntity.ok().body(searchResult);
 	}
 
 }

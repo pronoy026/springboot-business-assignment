@@ -5,7 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.java.springboot.assignment.dto.SearchResultDto;
 import com.java.springboot.assignment.entity.Branch;
@@ -37,7 +39,14 @@ public class BusinessServiceImpl implements BusinessService{
 
 	@Override
 	public Business updateBusiness(Business business) {
-		Business bs = businessRepository.findById(business.getId()).get();
+		Business bs;
+		try {
+			bs = businessRepository.findById(business.getId()).get();
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+	      			  HttpStatus.NOT_FOUND, "Business data not found to update."
+	      			);
+		}
 		bs.setName(business.getName());
 		bs.setContactNo(business.getContactNo());
 		bs.setPan(business.getPan());
@@ -49,7 +58,14 @@ public class BusinessServiceImpl implements BusinessService{
 
 	@Override
 	public Branch updateBranch(Branch branch) {
-		Branch bn = branchRepository.findById(branch.getId()).get();
+		Branch bn;
+		try {
+			bn = branchRepository.findById(branch.getId()).get();
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+	      			  HttpStatus.NOT_FOUND, "Branch data not found to update."
+	      			);
+		}
 		bn.setBusiness(branch.getBusiness());
 		bn.setAddress(branch.getAddress());
 		bn.setContact(branch.getContact());
@@ -70,37 +86,42 @@ public class BusinessServiceImpl implements BusinessService{
 		// search by business name
 		businessList = businessRepository.findByName(searchString);
 		if(!businessList.isEmpty()) {
-			searchResult.setBusiness(businessList);
+			searchResult.setBusinessList(businessList);
 			return searchResult;
 		}
 		
 		// search by pan
 		businessList = businessRepository.findByPan(searchString);
 		if(!businessList.isEmpty()) {
-			searchResult.setBusiness(businessList);
+			searchResult.setBusinessList(businessList);
 			return searchResult;
 		}
 		
 		// search by branch address
 		branchList = branchRepository.findByAddress(searchString);
 		if(!branchList.isEmpty()) {
-			searchResult.setBranch(branchList);
+			searchResult.setBranchList(branchList);
 			return searchResult;
 		}
 		
 		// search by active ind
 		branchList = branchRepository.findByActiveInd(searchString);
 		if(!branchList.isEmpty()) {
-			searchResult.setBranch(branchList);
+			searchResult.setBranchList(branchList);
 			return searchResult;
 		}
 				
 		// search by created date
+		LocalDate createdDate;
 		DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate createdDate = LocalDate.parse(searchString, dateformatter);
+		try {
+			createdDate = LocalDate.parse(searchString, dateformatter);
+		} catch (Exception e) {
+			return searchResult;
+		}
 		branchList = branchRepository.findByCreatedDate(createdDate);
 		if(!branchList.isEmpty()) {
-			searchResult.setBranch(branchList);
+			searchResult.setBranchList(branchList);
 			return searchResult;
 		}
 		

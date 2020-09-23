@@ -7,23 +7,23 @@ import com.java.springboot.assignment.entity.Business;
 
 public class SearchResultDto {
 
-	private List<Business> business;
+	private List<Business> businessList;
 	
-	private List<Branch> branch;
+	private List<Branch> branchList;
 
-	public List<Business> getBusiness() {
-		return business;
+	public List<Business> getBusinessList() {
+		return businessList;
 	}
 
-	public void setBusiness(List<Business> business) {
-		this.business = business;
+	public void setBusinessList(List<Business> business) {
+		this.businessList = business;
 	}
 
-	public List<Branch> getBranch() {
-		return branch;
+	public List<Branch> getBranchList() {
+		return branchList;
 	}
 
-	public void setBranch(List<Branch> branch) {
-		this.branch = branch;
+	public void setBranchList(List<Branch> branch) {
+		this.branchList = branch;
 	}
 }

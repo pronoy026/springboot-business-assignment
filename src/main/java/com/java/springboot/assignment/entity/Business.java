@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "Business_Master")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "branches"})
@@ -39,6 +41,7 @@ public class Business {
 	@Column(name="updated_date")
 	private LocalDate updatedDate;
 	
+	@ApiModelProperty(required = false, hidden = true)
 	@OneToMany(mappedBy = "business", fetch = FetchType.LAZY,
             cascade = CascadeType.MERGE)
     private List<Branch> branches;
