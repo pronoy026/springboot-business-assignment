@@ -17,5 +17,5 @@ public interface BusinessService {
 	
 	public Branch updateBranch(Branch branch);
 	
-	public SearchResultDto Search(String searchString);
+	public SearchResultDto search(String searchString);
 }

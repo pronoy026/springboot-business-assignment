@@ -77,7 +77,7 @@ public class BusinessServiceImpl implements BusinessService{
 	}
 
 	@Override
-	public SearchResultDto Search(String searchString) {
+	public SearchResultDto search(String searchString) {
 		
 		SearchResultDto searchResult = new SearchResultDto();
 		List<Business> businessList;

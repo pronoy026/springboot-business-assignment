@@ -43,8 +43,8 @@ public class BusinessController implements BusinessApi{
 	}
 
 	@Override
-	public ResponseEntity<SearchResultDto> Search(String searchString) {
-		SearchResultDto searchResult = businessService.Search(searchString);
+	public ResponseEntity<SearchResultDto> search(String searchString) {
+		SearchResultDto searchResult = businessService.search(searchString);
 		if( (searchResult.getBusinessList() == null || searchResult.getBusinessList().isEmpty())
 				&& (searchResult.getBranchList() == null || searchResult.getBranchList().isEmpty())) {
 			throw new ResponseStatusException(

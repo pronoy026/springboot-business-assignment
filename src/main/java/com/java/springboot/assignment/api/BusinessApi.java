@@ -38,6 +38,6 @@ public interface BusinessApi {
 	@ApiOperation(value = "Searches existing business or branch record", 
 		notes = "Provide valid business name, pan, branch address, active ind info or branch created date to search business or branch details.", 
 		response = SearchResultDto.class)
-	public ResponseEntity<SearchResultDto> Search(@PathVariable String searchString);
+	public ResponseEntity<SearchResultDto> search(@PathVariable String searchString);
 	
 }
